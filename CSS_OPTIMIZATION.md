@@ -16,10 +16,11 @@ Se ha implementado **lazy loading de CSS crítico** para mejorar significativame
 ```
 happy-baby-style-web/
 ├── index.html              # CSS crítico inline + lazy loading
-├── critical.css            # Estilos críticos (referencia)
-├── non-critical.css        # Estilos no críticos (carga asíncrona)
+├── css/
+│   ├── critical.css        # Estilos críticos (referencia)
+│   ├── non-critical.css    # Estilos no críticos (carga asíncrona)
+│   └── style.css           # CSS completo (legacy)
 ├── script.js               # JavaScript con fallback
-└── style.css               # CSS completo (legacy)
 ```
 
 ## 🔧 Implementación Técnica
@@ -50,8 +51,8 @@ happy-baby-style-web/
 ### **2. CSS No Crítico - Carga Asíncrona**
 ```html
 <!-- Preload con fallback -->
-<link rel="preload" href="non-critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="non-critical.css"></noscript>
+<link rel="preload" href="css/non-critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/non-critical.css"></noscript>
 ```
 
 ### **3. JavaScript Fallback**
@@ -60,7 +61,7 @@ happy-baby-style-web/
 function loadNonCriticalCSS() {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'non-critical.css';
+    link.href = 'css/non-critical.css';
     link.media = 'print';
     link.onload = function() {
         this.media = 'all';
@@ -172,7 +173,7 @@ https://www.webpagetest.org/
 
 ### **🎨 Modificación de Estilos**
 - **Críticos**: Editar directamente en HTML
-- **No críticos**: Editar `non-critical.css`
+- **No críticos**: Editar `css/non-critical.css`
 - **Responsive**: Mantener consistencia
 
 ### **🚀 Optimización Continua**

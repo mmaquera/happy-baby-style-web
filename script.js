@@ -12,7 +12,7 @@
         function loadNonCriticalCSS() {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = 'non-critical.css';
+            link.href = 'css/non-critical.css';
             link.media = 'print';
             link.onload = function() {
                 this.media = 'all';
