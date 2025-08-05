@@ -1,0 +1,157 @@
+{
+  "name": "happy-baby-style-web",
+  "version": "1.3.0",
+  "description": "Sitio web optimizado para SEO y responsive design de Happy Baby Style, marca de ropa orgánica para bebés",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000 --open=/",
+    "build": "npm run clean && npm run minify-html && npm run minify-css && npm run minify-js && npm run optimize-images && npm run copy-assets && node replace-assets-prod.js",
+    "build:prod": "npm run build && npm run compress",
+    "clean": "rimraf dist",
+    "minify-html": "npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true --input-dir . --output-dir dist --file-ext html",
+    "minify-css": "npx cleancss -o dist/css/style.min.css css/style.css && npx cleancss -o dist/css/critical.min.css css/critical.css && npx cleancss -o dist/css/non-critical.min.css css/non-critical.css",
+    "minify-js": "npx uglifyjs script.js -o dist/script.min.js --compress --mangle",
+    "optimize-images": "mkdir -p dist/imgs && cp imgs/* dist/imgs/",
+    "copy-assets": "cp robots.txt sitemap.xml site.webmanifest dist/ 2>/dev/null || echo 'Some files may not exist, continuing...'",
+    "compress": "gzip-size dist/**/*.{html,css,js}",
+    "analyze": "npm run build && npm run analyze-bundle",
+    "analyze-bundle": "webpack-bundle-analyzer dist/",
+    "lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
+    "test": "npm run build && npm run test-performance",
+    "test-performance": "lighthouse http://localhost:3000 --only-categories=performance --output=json --output-path=./performance-report.json",
+    "serve": "serve dist -p 8080",
+    "watch": "nodemon --watch . --ext html,css,js --exec 'npm run build'",
+    "lint": "eslint script.js",
+    "lint:fix": "eslint script.js --fix",
+    "format": "prettier --write '**/*.{html,css,js,json,md}'",
+    "validate": "html-validate index.html",
+    "sitemap": "sitemap-generator-cli https://happybabystyle.com -f dist/sitemap.xml",
+    "critical": "critical index.html --inline --base . --target dist/index.html --width 1300 --height 900",
+    "pwa": "workbox generateSW workbox-config.js",
+    "preview": "npm run build && npm run serve"
+  },
+  "keywords": [
+    "ropa-bebe",
+    "ropa-organica",
+    "algodon-organico",
+    "sostenible",
+    "responsive",
+    "seo",
+    "pwa",
+    "happy-baby-style"
+  ],
+  "author": "Happy Baby Style Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmaquera/happy-baby-style-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mmaquera/happy-baby-style-web/issues"
+  },
+  "homepage": "https://happybabystyle.com",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "autoprefixer": "^10.4.16",
+    "clean-css-cli": "^5.6.2",
+    "copyfiles": "^2.4.1",
+    "critical": "^5.1.1",
+    "eslint": "^8.51.0",
+    "gzip-size-cli": "^4.0.0",
+    "html-minifier": "^4.0.0",
+    "html-validate": "^8.8.0",
+    "imagemin": "^8.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^3.0.2",
+    "imagemin-webp": "^8.0.0",
+    "lighthouse": "^11.3.0",
+    "live-server": "^1.2.2",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0",
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "sitemap-generator-cli": "^7.0.0",
+    "serve": "^14.2.1",
+    "uglify-js": "^3.17.4",
+    "webpack": "^5.88.2",
+    "webpack-bundle-analyzer": "^4.9.1",
+    "workbox-cli": "^7.0.0"
+  },
+  "dependencies": {
+    "workbox-webpack-plugin": "^7.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "config": {
+    "port": 3000,
+    "buildDir": "dist",
+    "sourceDir": ".",
+    "imageFormats": ["jpg", "jpeg", "png", "gif", "svg", "webp"],
+    "minifyOptions": {
+      "html": {
+        "collapseWhitespace": true,
+        "removeComments": true,
+        "removeOptionalTags": true,
+        "removeRedundantAttributes": true,
+        "removeScriptTypeAttributes": true,
+        "removeTagWhitespace": true,
+        "useShortDoctype": true,
+        "minifyCSS": true,
+        "minifyJS": true
+      },
+      "css": {
+        "level": 2,
+        "format": "beautify"
+      },
+      "js": {
+        "compress": {
+          "drop_console": true,
+          "drop_debugger": true
+        },
+        "mangle": true
+      }
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {},
+      "cssnano": {
+        "preset": "default"
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-console": "warn",
+      "no-unused-vars": "warn"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 80,
+    "tabWidth": 2
+  }
+} 
