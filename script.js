@@ -2,7 +2,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX', {
+        gtag('config', 'G-CRYLV6FYNP', {
             page_title: 'Happy Baby Style - Ropa Orgánica para Bebés',
             page_location: window.location.href,
             send_page_view: true
